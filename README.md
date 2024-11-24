@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Digital Reading Portfolio - GED0001
+
+A comprehensive digital portfolio showcasing reading process worksheets, reflections, and resources for the GED0001 - Specialized English Program at FEU Tech.
+
+## Features
+
+- **Reading Process Worksheets**: Interactive worksheets to guide through technical reading analysis
+- **Reflection Papers**: Collection of personal insights and learning reflections
+- **Resources**: Curated technical reading materials and references
+- **iCARE Activities**: Documentation of laboratory activities and Achieve 3000 tasks
+- **Search Functionality**: Easy navigation through all materials
+- **Responsive Design**: Optimized for both desktop and mobile viewing
+
+## Tech Stack
+
+- **Framework**: [Next.js 14](https://nextjs.org)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com)
+- **Animations**: [Framer Motion](https://www.framer.com/motion)
+- **Icons**: [Heroicons](https://heroicons.com)
 
 ## Getting Started
 
-First, run the development server:
-
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/GeloCreativeStudio/GED0001.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+- `/src/app/*` - Main application pages
+- `/src/components/*` - Reusable UI components
+- `/public/documents/*` - PDF documents and resources
+- `/public/fonts/*` - Custom fonts
+- `/public/reference/*` - Reference materials
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Start development server
+npm run dev
 
-## Deploy on Vercel
+# Build for production
+npm run build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Start production server
+npm run start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+This project is part of an academic requirement. While it's public for reference, we're not actively seeking contributions.
+
+## License
+
+This project is academic coursework and is not licensed for commercial use.
+
+## Acknowledgments
+
+- FEU Tech GED0001 - Specialized English Program
+- Next.js team for the excellent framework
+- All contributors and classmates

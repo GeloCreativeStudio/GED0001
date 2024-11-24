@@ -4,7 +4,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { 
   BookOpenIcon, 
   AcademicCapIcon, 
@@ -17,13 +17,13 @@ import {
   RocketLaunchIcon
 } from '@heroicons/react/24/outline';
 
-const fadeIn = {
+const fadeIn: Variants = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
+  exit: { opacity: 0, y: 20 }
 };
 
-const stagger = {
+const stagger: Variants = {
   animate: {
     transition: {
       staggerChildren: 0.1

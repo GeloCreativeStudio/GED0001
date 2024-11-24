@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { 
   UserIcon,
   AcademicCapIcon,
@@ -9,13 +9,13 @@ import {
   DocumentTextIcon
 } from '@heroicons/react/24/outline';
 
-const fadeIn = {
+const fadeIn: Variants = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 }
+  exit: { opacity: 0, y: 20 }
 };
 
-const stagger = {
+const stagger: Variants = {
   animate: {
     transition: {
       staggerChildren: 0.2

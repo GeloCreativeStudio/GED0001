@@ -252,9 +252,19 @@ export default function DocumentationPage() {
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 text-[#1C5310] tracking-tight">
                 Documentation
               </h1>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto">
+              <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto mb-6">
                 A comprehensive guide to our Digital Reading Portfolio website for GED0001 - Specialized English Program at FEU Tech.
               </p>
+              <motion.a
+                href="/docs/latex/GED0001_Website_Structure.pdf"
+                download
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 bg-[#1C5310] text-white rounded-lg hover:bg-[#1C5310]/90 transition-all duration-300 shadow-md hover:shadow-lg group"
+              >
+                <DocumentTextIcon className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                <span className="text-sm sm:text-base font-medium">Download Documentation PDF</span>
+              </motion.a>
             </motion.div>
 
             {/* Navigation Pills */}

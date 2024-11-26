@@ -73,17 +73,17 @@ function ReflectionCard({ paper }: { paper: ReflectionPaper }) {
 
 const reflectionPapers = [
   {
-    title: "Manalo, Angelo L.",
-    date: "GED0001 Journey - A Five-Paragraph Reflection",
-    excerpt: "A personal reflection on my experience in GED0001, discussing the challenges faced, skills developed, and valuable lessons learned throughout the course.",
-    pdfUrl: "/documents/form_and_reflections/Manalo/Reflection_Paper.pdf",
-    tags: ["Course Experience", "Personal Growth", "Technical Reading"]
-  },
-  {
     title: "Pantaleon, Hannah Coleen D.",
     date: "GED0001 Journey - A Five-Paragraph Reflection",
     excerpt: "A personal reflection on my experience in GED0001, discussing the challenges faced, skills developed, and valuable lessons learned throughout the course.",
     pdfUrl: "/documents/form_and_reflections/Pantaleon/Reflection_Paper.pdf",
+    tags: ["Course Experience", "Personal Growth", "Technical Reading"]
+  },
+  {
+    title: "Manalo, Angelo L.",
+    date: "GED0001 Journey - A Five-Paragraph Reflection",
+    excerpt: "A personal reflection on my experience in GED0001, discussing the challenges faced, skills developed, and valuable lessons learned throughout the course.",
+    pdfUrl: "/documents/form_and_reflections/Manalo/Reflection_Paper.pdf",
     tags: ["Course Experience", "Personal Growth", "Technical Reading"]
   },
   {
@@ -94,10 +94,38 @@ const reflectionPapers = [
     tags: ["Course Experience", "Personal Growth", "Technical Reading"]
   },
   {
-    title: "Balais, Jerico James G.",
+    title: "Cantuba, Maruel Zoe",
     date: "GED0001 Journey - A Five-Paragraph Reflection",
     excerpt: "A personal reflection on my experience in GED0001, discussing the challenges faced, skills developed, and valuable lessons learned throughout the course.",
-    pdfUrl: "/documents/form_and_reflections/Balais/Reflection_Paper.pdf",
+    pdfUrl: "/documents/form_and_reflections/Cantuba/Reflection_Paper.pdf",
+    tags: ["Course Experience", "Personal Growth", "Technical Reading"]
+  },
+  {
+    title: "Tabago, Marc Alexis",
+    date: "GED0001 Journey - A Five-Paragraph Reflection",
+    excerpt: "A personal reflection on my experience in GED0001, discussing the challenges faced, skills developed, and valuable lessons learned throughout the course.",
+    pdfUrl: "/documents/form_and_reflections/Tabago/Reflection_Paper.pdf",
+    tags: ["Course Experience", "Personal Growth", "Technical Reading"]
+  },
+  {
+    title: "Cruz, Jan Mychal",
+    date: "GED0001 Journey - A Five-Paragraph Reflection",
+    excerpt: "A personal reflection on my experience in GED0001, discussing the challenges faced, skills developed, and valuable lessons learned throughout the course.",
+    pdfUrl: "/documents/form_and_reflections/Cruz/Reflection_Paper.pdf",
+    tags: ["Course Experience", "Personal Growth", "Technical Reading"]
+  },
+  {
+    title: "Suarez, Ken Enrique",
+    date: "GED0001 Journey - A Five-Paragraph Reflection",
+    excerpt: "A personal reflection on my experience in GED0001, discussing the challenges faced, skills developed, and valuable lessons learned throughout the course.",
+    pdfUrl: "/documents/form_and_reflections/Suarez/Reflection_Paper.pdf",
+    tags: ["Course Experience", "Personal Growth", "Technical Reading"]
+  },
+  {
+    title: "Cachuela, Maricar Joi",
+    date: "GED0001 Journey - A Five-Paragraph Reflection",
+    excerpt: "A personal reflection on my experience in GED0001, discussing the challenges faced, skills developed, and valuable lessons learned throughout the course.",
+    pdfUrl: "/documents/form_and_reflections/Cachuela/Reflection_Paper.pdf",
     tags: ["Course Experience", "Personal Growth", "Technical Reading"]
   }
 ];

@@ -10,7 +10,8 @@ import {
   BookOpenIcon,
   ChatBubbleLeftRightIcon,
   HeartIcon,
-  BookmarkIcon
+  BookmarkIcon,
+  DocumentChartBarIcon
 } from '@heroicons/react/24/outline';
 
 function NavLink({ href, children, icon: Icon }: { href: string; children: React.ReactNode; icon: React.ElementType }) {
@@ -62,7 +63,7 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1024 && isOpen) {
+      if (window.innerWidth >= 1280 && isOpen) {
         setIsOpen(false);
       }
     };
@@ -74,7 +75,7 @@ export default function Navigation() {
   return (
     <>
       <nav className="bg-white shadow-md sticky top-0 z-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-4 sm:px-6 xl:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
             <Link 
@@ -101,17 +102,18 @@ export default function Navigation() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-1">
+            <div className="hidden xl:flex items-center space-x-1">
               <NavLink href="/" icon={HomeIcon}>Home</NavLink>
               <NavLink href="/resources" icon={BookmarkIcon}>Resources</NavLink>
               <NavLink href="/rpw" icon={BookOpenIcon}>Reading Process</NavLink>
               <NavLink href="/reflections" icon={ChatBubbleLeftRightIcon}>Reflections</NavLink>
               <NavLink href="/icare" icon={HeartIcon}>iCARE</NavLink>
+              <NavLink href="/documentation" icon={DocumentChartBarIcon}>Documentation</NavLink>
             </div>
 
             {/* Mobile Menu Button */}
             <motion.button 
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1C5310] focus-visible:ring-offset-2"
+              className="xl:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1C5310] focus-visible:ring-offset-2"
               onClick={() => setIsOpen(!isOpen)}
               aria-label={isOpen ? "Close menu" : "Open menu"}
               whileHover={{ scale: 1.05 }}
@@ -157,7 +159,7 @@ export default function Navigation() {
           <>
             {/* Backdrop */}
             <motion.div 
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 xl:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -166,7 +168,7 @@ export default function Navigation() {
 
             {/* Menu Panel */}
             <motion.div 
-              className="fixed top-0 right-0 w-full max-w-sm h-full bg-white shadow-xl z-50 lg:hidden overflow-y-auto"
+              className="fixed top-0 right-0 w-full max-w-sm h-full bg-white shadow-xl z-50 xl:hidden overflow-y-auto"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -209,6 +211,7 @@ export default function Navigation() {
                     <MobileNavLink href="/rpw" icon={BookOpenIcon}>Reading Process</MobileNavLink>
                     <MobileNavLink href="/reflections" icon={ChatBubbleLeftRightIcon}>Reflections</MobileNavLink>
                     <MobileNavLink href="/icare" icon={HeartIcon}>iCARE</MobileNavLink>
+                    <MobileNavLink href="/documentation" icon={DocumentChartBarIcon}>Documentation</MobileNavLink>
                   </div>
                 </motion.nav>
               </div>

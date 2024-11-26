@@ -4,7 +4,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   BookOpenIcon, 
   AcademicCapIcon, 
@@ -16,20 +16,19 @@ import {
   BookmarkIcon,
   RocketLaunchIcon
 } from '@heroicons/react/24/outline';
+import { fadeIn, stagger, pageTransition } from '@/components/animations';
 
-const fadeIn: Variants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 20 }
-};
-
-const stagger: Variants = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
+const IconWrapper = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="relative">
+      <div className="w-16 h-16 rounded-2xl bg-[#1C5310]/10 flex items-center justify-center mb-6 group-hover:bg-[#1C5310]/20 transition-all duration-300">
+        {children}
+      </div>
+      {/* Decorative circle */}
+      <div className="absolute -inset-2 rounded-full bg-[#FFB81C]/10 -z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 blur-xl" />
+    </div>
+  );
+}
 
 function TeamMember({ name, role, contributions }: { name: string; role: string; contributions?: string[] }) {
   return (
@@ -67,18 +66,6 @@ function TeamMember({ name, role, contributions }: { name: string; role: string;
   );
 }
 
-function IconWrapper({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="relative">
-      <div className="w-16 h-16 rounded-2xl bg-[#1C5310]/10 flex items-center justify-center mb-6 group-hover:bg-[#1C5310]/20 transition-all duration-300">
-        {children}
-      </div>
-      {/* Decorative circle */}
-      <div className="absolute -inset-2 rounded-full bg-[#FFB81C]/10 -z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 blur-xl" />
-    </div>
-  );
-}
-
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -87,7 +74,12 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <motion.main 
+      initial="initial" 
+      animate="animate" 
+      variants={pageTransition} 
+      className="min-h-screen bg-gradient-to-b from-white to-gray-50"
+    >
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
         {/* Background Pattern */}
@@ -98,15 +90,11 @@ export default function Home() {
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            variants={fadeIn}
             className="text-center"
           >
             <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5 }}
+              variants={fadeIn}
               className="mb-8 relative w-40 h-40 mx-auto"
             >
               <Image
@@ -348,6 +336,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-    </main>
+    </motion.main>
   );
 }

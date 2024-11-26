@@ -1,22 +1,10 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, Variants } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { DocumentTextIcon, MagnifyingGlassIcon, PencilSquareIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
-
-const fadeIn: Variants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 20 }
-}
-
-const stagger: Variants = {
-  animate: {
-    transition: {
-      staggerChildren: 0.2
-    }
-  }
-}
+import PDFViewer from '@/components/PDFViewer'
+import { fadeIn, stagger, scaleIn, pageTransition } from '@/components/animations'
 
 interface ProcessCardProps {
   title: string
@@ -100,6 +88,7 @@ const processes = [
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState('pdf');
+  const [isPDFOpen, setIsPDFOpen] = useState(false);
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -110,18 +99,37 @@ export default function Page() {
         
         <div className="container mx-auto px-4 sm:px-6 relative">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1C5310] mb-4">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1C5310] mb-4"
+            >
               Reading Process Worksheets
-            </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-8 sm:mb-12">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-base sm:text-lg lg:text-xl text-gray-600 mb-8 sm:mb-12"
+            >
               Our systematic approach to technical reading analysis and comprehension
-            </p>
+            </motion.p>
           </div>
         </div>
 
         {/* Decorative Elements */}
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#1C5310]/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#FFB81C]/5 rounded-full blur-3xl" />
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="absolute -top-10 -right-10 w-40 h-40 bg-[#1C5310]/5 rounded-full blur-3xl" 
+        />
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#FFB81C]/5 rounded-full blur-3xl" 
+        />
       </section>
 
       {/* Main Content */}
@@ -134,7 +142,7 @@ export default function Page() {
                 onClick={() => setActiveTab('pdf')}
                 className={`px-4 sm:px-6 py-3 rounded-lg font-medium transition-colors whitespace-nowrap text-sm sm:text-base
                   ${activeTab === 'pdf' 
-                    ? 'bg-[#1C5310] text-white' 
+                    ? 'bg-[#1C5310] text-white shadow-lg' 
                     : 'bg-white text-[#1C5310] hover:bg-[#1C5310]/10'}`}
               >
                 Worksheet
@@ -143,7 +151,7 @@ export default function Page() {
                 onClick={() => setActiveTab('steps')}
                 className={`px-4 sm:px-6 py-3 rounded-lg font-medium transition-colors whitespace-nowrap text-sm sm:text-base
                   ${activeTab === 'steps' 
-                    ? 'bg-[#1C5310] text-white' 
+                    ? 'bg-[#1C5310] text-white shadow-lg' 
                     : 'bg-white text-[#1C5310] hover:bg-[#1C5310]/10'}`}
               >
                 Reading Guide
@@ -151,61 +159,61 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-6 sm:gap-8">
-            {/* PDF Viewer */}
-            <div className={`lg:col-span-8 ${activeTab === 'steps' ? 'hidden lg:block' : ''}`}>
+          <div className="flex flex-col gap-6 sm:gap-8 max-w-4xl mx-auto">
+            {/* PDF Section */}
+            <div className={`${activeTab === 'steps' ? 'hidden lg:block' : ''}`}>
               <motion.div
                 initial="initial"
                 animate="animate"
                 variants={fadeIn}
                 className="bg-white rounded-2xl shadow-lg overflow-hidden"
               >
-                <div className="p-4 sm:p-6 border-b border-gray-100">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-[#1C5310]">
-                    Reading Process Worksheet
-                  </h2>
-                  <p className="text-sm sm:text-base text-gray-600 mt-2">
-                    Below is our comprehensive worksheet that guides you through the reading process, helping you analyze and understand technical texts effectively
-                  </p>
-                </div>
-                <div className="relative">
-                  <div className="w-full" style={{ paddingTop: '141.4%' }}> {/* A4 aspect ratio */}
-                    <div className="absolute inset-0 p-4">
-                      <iframe
-                        src="/documents/Reading Process Worksheet.pdf"
-                        title="Reading Process Worksheet"
-                        className="w-full h-full rounded-lg"
-                        style={{ 
-                          border: '1px solid #e5e7eb',
-                          backgroundColor: '#fff'
-                        }}
-                      />
-                    </div>
+                <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="flex-grow">
+                    <h2 className="text-xl sm:text-2xl font-semibold text-[#1C5310] mb-2">
+                      Reading Process Worksheet
+                    </h2>
+                    <p className="text-sm sm:text-base text-gray-600">
+                      A comprehensive worksheet that guides you through the reading process, helping you analyze and understand technical texts effectively
+                    </p>
                   </div>
+                  <button
+                    onClick={() => setIsPDFOpen(true)}
+                    className="flex items-center px-4 sm:px-6 py-2.5 sm:py-3 bg-[#1C5310] text-white rounded-lg hover:bg-[#1C5310]/90 transition-all duration-300 group w-full sm:w-auto justify-center sm:justify-start"
+                  >
+                    <DocumentTextIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2 group-hover:scale-110 transition-transform" />
+                    <span className="text-sm sm:text-base font-medium whitespace-nowrap">Open Worksheet</span>
+                  </button>
                 </div>
               </motion.div>
+
+              {/* PDF Viewer Modal */}
+              <PDFViewer
+                url="/documents/Reading Process Worksheet.pdf"
+                title="Reading Process Worksheet"
+                isOpen={isPDFOpen}
+                onClose={() => setIsPDFOpen(false)}
+              />
             </div>
 
             {/* Reading Process Steps */}
-            <div className={`lg:col-span-4 ${activeTab === 'pdf' ? 'hidden lg:block' : ''}`}>
-              <div className="sticky top-6 space-y-4 sm:space-y-6">
-                <motion.div
-                  initial="initial"
-                  animate="animate"
-                  variants={stagger}
-                  className="space-y-4 sm:space-y-6"
-                >
-                  {processes.map((process, index) => (
-                    <ProcessCard
-                      key={index}
-                      title={process.title}
-                      description={process.description}
-                      icon={process.icon}
-                      steps={process.steps}
-                    />
-                  ))}
-                </motion.div>
-              </div>
+            <div className={`${activeTab === 'pdf' ? 'hidden lg:block' : ''}`}>
+              <motion.div
+                initial="initial"
+                animate="animate"
+                variants={stagger}
+                className="space-y-4 sm:space-y-6"
+              >
+                {processes.map((process, index) => (
+                  <ProcessCard
+                    key={index}
+                    title={process.title}
+                    description={process.description}
+                    icon={process.icon}
+                    steps={process.steps}
+                  />
+                ))}
+              </motion.div>
             </div>
           </div>
         </div>

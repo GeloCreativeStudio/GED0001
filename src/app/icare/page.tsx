@@ -1,157 +1,260 @@
 'use client';
 
+import { useState } from 'react';
 import React from 'react';
-import { motion, Variants } from 'framer-motion';
-import { WrenchScrewdriverIcon, DocumentTextIcon, ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { 
+  UserIcon,
+  DocumentTextIcon,
+  CheckCircleIcon,
+  AcademicCapIcon,
+  BookOpenIcon,
+  PencilSquareIcon,
+  ClipboardDocumentCheckIcon,
+  StarIcon
+} from '@heroicons/react/24/outline';
+import PDFViewer from '@/components/PDFViewer';
+import Image from 'next/image';
+import { fadeIn, stagger, slideIn, pageTransition } from '@/components/animations';
 
-const fadeIn: Variants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 20 }
-};
+interface RubricCriteria {
+  title: string;
+  points: number;
+  description: string;
+  icon: any;
+}
 
-const stagger: Variants = {
-  animate: {
-    transition: {
-      staggerChildren: 0.2
-    }
-  }
-};
-
-const features = [
+const rubricCriteria: RubricCriteria[] = [
   {
-    title: "iCARE-ERC Laboratory Forms",
-    description: "Comprehensive documentation of our team's laboratory activities and technical reading exercises",
-    icon: <DocumentTextIcon className="w-6 h-6 text-[#1C5310]" />
+    title: "Process Sheets",
+    points: 25,
+    description: "Complete set of two reader responses, two reading process worksheets, and one five-paragraph reflection",
+    icon: ClipboardDocumentCheckIcon
   },
   {
-    title: "Achieve 3000 Activities",
-    description: "Collection of our completed Achieve 3000 reading comprehension and analysis tasks",
-    icon: <ClipboardDocumentListIcon className="w-6 h-6 text-[#1C5310]" />
+    title: "Understanding the Text",
+    points: 20,
+    description: "Demonstrates clear comprehension of main ideas and supporting points",
+    icon: BookOpenIcon
+  },
+  {
+    title: "Reasoning & Reaction",
+    points: 20,
+    description: "Shows logical coherence and effective use of textual evidence",
+    icon: PencilSquareIcon
+  },
+  {
+    title: "Writing Conventions",
+    points: 15,
+    description: "Proper grammar, mechanics, and format adherence",
+    icon: CheckCircleIcon
+  },
+  {
+    title: "iCARE Activities",
+    points: 20,
+    description: "Completion of 10 iCARE activities with proper documentation",
+    icon: StarIcon
   }
 ];
 
-export default function ICarePage() {
+interface TeamMember {
+  name: string;
+  role: string;
+  description: string;
+  pdfUrl: string;
+  tags: string[];
+}
+
+const teamMembers: TeamMember[] = [
+  {
+    name: "Pantaleon, Hannah Coleen D.",
+    role: "Team Leader",
+    description: "Led the team in completing comprehensive iCARE activities documentation, ensuring adherence to rubric criteria and maintaining high standards in technical reading exercises.",
+    pdfUrl: "/documents/form_and_reflections/Pantaleon/iCARE-ERC_Lab_Form.pdf",
+    tags: ["Process Sheets", "Reader Response", "iCARE Activities"]
+  },
+  {
+    name: "Manalo, Angelo",
+    role: "Web Developer",
+    description: "Developed the digital reading portfolio platform while maintaining detailed documentation of technical reading activities and iCARE forms.",
+    pdfUrl: "/documents/form_and_reflections/Manalo/iCARE-ERC_Lab_Form.pdf",
+    tags: ["Technical Documentation", "iCARE Activities", "Portfolio Development"]
+  },
+  {
+    name: "Castro, Christian Aaron",
+    role: "Content Writer",
+    description: "Comprehensive documentation of laboratory activities and technical reading exercises through iCARE-ERC forms and Achieve 3000 activities.",
+    pdfUrl: "/documents/form_and_reflections/Castro/iCARE-ERC_Lab_Form.pdf",
+    tags: ["Lab Documentation", "Technical Reading", "Achieve 3000"]
+  },
+  {
+    name: "Cantuba, Maruel Zoe",
+    role: "Content Writer",
+    description: "Comprehensive documentation of laboratory activities and technical reading exercises through iCARE-ERC forms and Achieve 3000 activities.",
+    pdfUrl: "/documents/form_and_reflections/Cantuba/iCARE-ERC_Lab_Form.pdf",
+    tags: ["Lab Documentation", "Technical Reading", "Achieve 3000"]
+  },
+  {
+    name: "Tabago, Marc Alexis",
+    role: "Content Writer",
+    description: "Comprehensive documentation of laboratory activities and technical reading exercises through iCARE-ERC forms and Achieve 3000 activities.",
+    pdfUrl: "/documents/form_and_reflections/Tabago/iCARE-ERC_Lab_Form.pdf",
+    tags: ["Lab Documentation", "Technical Reading", "Achieve 3000"]
+  },
+  {
+    name: "Cruz, Jan Mychal",
+    role: "Content Writer",
+    description: "Comprehensive documentation of laboratory activities and technical reading exercises through iCARE-ERC forms and Achieve 3000 activities.",
+    pdfUrl: "/documents/form_and_reflections/Cruz/iCARE-ERC_Lab_Form.pdf",
+    tags: ["Lab Documentation", "Technical Reading", "Achieve 3000"]
+  },
+  {
+    name: "Suarez, Ken Enrique",
+    role: "Content Writer",
+    description: "Comprehensive documentation of laboratory activities and technical reading exercises through iCARE-ERC forms and Achieve 3000 activities.",
+    pdfUrl: "/documents/form_and_reflections/Suarez/iCARE-ERC_Lab_Form.pdf",
+    tags: ["Lab Documentation", "Technical Reading", "Achieve 3000"]
+  },
+  {
+    name: "Cachuela, Maricar Joi",
+    role: "Content Writer",
+    description: "Comprehensive documentation of laboratory activities and technical reading exercises through iCARE-ERC forms and Achieve 3000 activities.",
+    pdfUrl: "/documents/form_and_reflections/Cachuela/iCARE-ERC_Lab_Form.pdf",
+    tags: ["Lab Documentation", "Technical Reading", "Achieve 3000"]
+  }
+];
+
+function RubricCard({ criteria }: { criteria: RubricCriteria }) {
+  const Icon = criteria.icon;
   return (
-    <main className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative py-12 sm:py-20 overflow-hidden bg-gradient-to-b from-[#1C5310]/5 to-white">
-        {/* Background Pattern */}
+    <motion.div
+      variants={fadeIn}
+      className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group"
+    >
+      <div className="flex items-start space-x-3 sm:space-x-4 lg:space-x-6">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl bg-[#1C5310]/10 flex items-center justify-center group-hover:bg-[#1C5310]/20 transition-all duration-300 flex-shrink-0">
+          <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-[#1C5310] group-hover:scale-110 transition-transform" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex justify-between items-start mb-1 sm:mb-2">
+            <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-[#1C5310] truncate pr-2">{criteria.title}</h3>
+            <span className="text-[#FFB81C] font-bold text-sm sm:text-base lg:text-lg whitespace-nowrap">{criteria.points} pts</span>
+          </div>
+          <p className="text-xs sm:text-sm lg:text-base text-gray-600 line-clamp-3 group-hover:line-clamp-none">{criteria.description}</p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function MemberCard({ member }: { member: TeamMember }) {
+  const [isPDFOpen, setIsPDFOpen] = useState(false);
+
+  return (
+    <motion.div
+      variants={slideIn}
+      className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300"
+    >
+      <div className="p-4 sm:p-6 lg:p-8">
+        <div className="flex items-start space-x-3 sm:space-x-4 lg:space-x-6">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl bg-[#1C5310]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#1C5310]/20 transition-all duration-300">
+            <UserIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-[#1C5310] group-hover:scale-110 transition-transform" />
+          </div>
+          <div className="flex-grow min-w-0">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4 mb-2 sm:mb-3">
+              <div>
+                <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-[#1C5310] mb-0.5 sm:mb-1 group-hover:text-[#1C5310]/90 transition-colors truncate">{member.name}</h3>
+                <p className="text-xs sm:text-sm lg:text-base text-[#FFB81C] font-medium mb-0.5 sm:mb-1">{member.role}</p>
+              </div>
+              <button
+                onClick={() => setIsPDFOpen(true)}
+                className="flex items-center px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 bg-[#1C5310] text-white rounded-lg hover:bg-[#1C5310]/90 transition-all duration-300 group/btn w-full sm:w-auto justify-center sm:justify-start transform hover:translate-y-[-2px]"
+              >
+                <DocumentTextIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-1.5 lg:mr-2 group-hover/btn:scale-110 transition-transform" />
+                <span className="text-xs sm:text-sm lg:text-base font-medium whitespace-nowrap">View iCARE Form</span>
+              </button>
+            </div>
+            <p className="text-xs sm:text-sm lg:text-base text-gray-600 mb-2 sm:mb-3 lg:mb-4 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">{member.description}</p>
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              {member.tags.map((tag, index) => (
+                <span 
+                  key={index}
+                  className="px-2 sm:px-2.5 lg:px-3.5 py-0.5 sm:py-1 bg-[#FFB81C]/10 text-[#1C5310] rounded-full text-xs sm:text-sm font-medium transform hover:scale-105 transition-transform"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <PDFViewer
+        url={member.pdfUrl}
+        title={`${member.name}'s iCARE-ERC Laboratory Form`}
+        isOpen={isPDFOpen}
+        onClose={() => setIsPDFOpen(false)}
+      />
+    </motion.div>
+  );
+}
+
+export default function ICarePage() {
+  const { scrollY } = useScroll();
+
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <section className="relative py-12 sm:py-16 lg:py-20 xl:py-28 overflow-hidden">
+        {/* Background Elements */}
         <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-[0.02]" />
+        <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#1C5310]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#FFB81C]/5 rounded-full blur-3xl" />
         
-        <div className="container mx-auto px-4 sm:px-6 relative">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <motion.div
             initial="initial"
             animate="animate"
-            variants={stagger}
-            className="max-w-4xl mx-auto text-center"
+            variants={pageTransition}
+            className="max-w-3xl lg:max-w-5xl mx-auto"
           >
+            {/* Hero Section */}
             <motion.div 
               variants={fadeIn}
-              className="w-16 sm:w-20 h-16 sm:h-20 mx-auto mb-6 sm:mb-8 rounded-2xl bg-[#1C5310]/10 flex items-center justify-center"
+              className="text-center mb-8 sm:mb-12 lg:mb-16"
             >
-              <WrenchScrewdriverIcon className="w-8 sm:w-10 h-8 sm:h-10 text-[#1C5310]" />
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 lg:mb-6 text-[#1C5310] tracking-tight">
+                Reading Portfolio
+              </h1>
+
+              <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto mb-8 sm:mb-10 lg:mb-12">
+                A comprehensive showcase of our team's work in <span className="text-[#1C5310] font-semibold">GED0001 - Specialized English Program</span> at FEU Tech. 
+                This portfolio demonstrates our mastery of technical reading, critical analysis, and professional documentation.
+              </p>
+
+              {/* Team Section */}
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1C5310] mb-4 sm:mb-6 lg:mb-8">Team Contributions</h2>
             </motion.div>
 
-            <motion.h1 
-              variants={fadeIn}
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-[#1C5310]"
-            >
-              Coming Soon
-            </motion.h1>
-
-            <motion.p 
-              variants={fadeIn}
-              className="text-base sm:text-lg text-gray-600 mb-8 sm:mb-12"
-            >
-              We are currently preparing our iCARE activities documentation. Stay tuned!
-            </motion.p>
-
-            {/* Progress Bar */}
+            {/* Team Members Grid */}
             <motion.div 
               variants={fadeIn}
-              className="max-w-md mx-auto mb-12 sm:mb-16"
+              className="space-y-3 sm:space-y-4 lg:space-y-6 mb-8 sm:mb-12 lg:mb-16"
             >
-              <div className="bg-gray-100 h-4 rounded-full overflow-hidden">
-                <div className="bg-[#1C5310] w-[94%] h-full rounded-full" />
-              </div>
-              <p className="text-sm text-gray-500 mt-2">Documentation in Progress - 94%</p>
-            </motion.div>
-
-            {/* Feature Cards */}
-            <motion.div 
-              variants={fadeIn}
-              className="grid sm:grid-cols-2 gap-4 sm:gap-6 max-w-3xl mx-auto"
-            >
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="p-4 sm:p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow"
-                >
-                  <div className="w-12 sm:w-14 h-12 sm:h-14 mx-auto mb-4 rounded-xl bg-[#1C5310]/10 flex items-center justify-center">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-semibold mb-2 text-[#1C5310]">{feature.title}</h3>
-                  <p className="text-sm sm:text-base text-gray-600">{feature.description}</p>
-                </div>
+              {teamMembers.map((member, index) => (
+                <MemberCard key={index} member={member} />
               ))}
+            </motion.div>
+
+            {/* Rubric Section */}
+            <motion.div variants={fadeIn} className="text-center">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1C5310] mb-4 sm:mb-6 lg:mb-8">Assessment Criteria</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
+                {rubricCriteria.map((criteria, index) => (
+                  <RubricCard key={index} criteria={criteria} />
+                ))}
+              </div>
             </motion.div>
           </motion.div>
-        </div>
-
-        {/* Decorative Elements */}
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#1C5310]/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#FFB81C]/5 rounded-full blur-3xl" />
-      </section>
-
-      {/* Features Preview */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial="initial"
-              animate="animate"
-              variants={stagger}
-              className="grid md:grid-cols-2 gap-8"
-            >
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeIn}
-                  className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-[#1C5310]/10 flex items-center justify-center mb-6">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-xl font-semibold text-[#1C5310] mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Progress Indicator */}
-            <motion.div
-              variants={fadeIn}
-              className="mt-16 text-center"
-            >
-              <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden mb-4">
-                <motion.div
-                  className="h-full bg-[#1C5310] rounded-full"
-                  initial={{ width: 0 }}
-                  animate={{ width: '94%' }}
-                  transition={{ duration: 1.5, ease: 'easeOut' }}
-                />
-              </div>
-              <p className="text-[#2E7D32] font-medium">Documentation in Progress</p>
-              <p className="text-gray-600 mt-2">
-                We're currently organizing and uploading our iCARE-ERC Laboratory Forms and Achieve 3000 Activities. Check back soon!
-              </p>
-            </motion.div>
-          </div>
         </div>
       </section>
     </main>

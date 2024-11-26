@@ -40,6 +40,11 @@ export default function Footer() {
                   iCARE
                 </Link>
               </li>
+              <li>
+                <Link href="/documentation" className="text-sm hover:text-[#FFB81C] transition-colors">
+                  Documentation
+                </Link>
+              </li>
             </ul>
           </div>
           <div>

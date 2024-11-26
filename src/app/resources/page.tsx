@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   BookOpenIcon, 
   DocumentTextIcon, 
@@ -11,20 +11,8 @@ import {
   SpeakerWaveIcon,
   WifiIcon
 } from '@heroicons/react/24/outline';
-
-const fadeIn: Variants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 20 }
-};
-
-const stagger: Variants = {
-  animate: {
-    transition: {
-      staggerChildren: 0.2
-    }
-  }
-};
+import PDFViewer from '@/components/PDFViewer';
+import { fadeIn, stagger, scaleIn, pageTransition } from '@/components/animations';
 
 interface ResourceCardProps {
   title: string;
@@ -55,60 +43,21 @@ function ResourceCard({ title, description, pdfUrl, icon }: ResourceCardProps) {
               <div className="flex items-center mt-1 sm:mt-0">
                 <DocumentTextIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#FFB81C] mr-1.5" />
                 <span className="text-xs sm:text-sm text-[#FFB81C] font-medium whitespace-nowrap">
-                  {isExpanded ? 'Click to close PDF' : 'Click to view PDF'}
+                  View PDF
                 </span>
               </div>
             </div>
-            <p className="text-sm sm:text-base text-gray-600 line-clamp-2 mb-2">{description}</p>
-            <div className="flex items-center text-xs sm:text-sm text-gray-500">
-              <motion.div
-                animate={{ rotate: isExpanded ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-                className="mr-1.5"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4 sm:w-5 sm:h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </motion.div>
-              {isExpanded ? 'Collapse document' : 'Expand document'}
-            </div>
+            <p className="text-sm sm:text-base text-gray-600 line-clamp-2">{description}</p>
           </div>
         </div>
       </div>
       
-      {isExpanded && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        >
-          <div className="relative" style={{ paddingTop: '141.4%' }}> {/* A4 aspect ratio */}
-            <div className="absolute inset-0 p-4">
-              <iframe
-                src={pdfUrl}
-                title={title}
-                className="w-full h-full rounded-lg shadow-lg"
-                style={{ 
-                  border: '1px solid #e5e7eb',
-                  backgroundColor: '#fff'
-                }}
-              />
-            </div>
-          </div>
-        </motion.div>
-      )}
+      <PDFViewer
+        url={pdfUrl}
+        title={title}
+        isOpen={isExpanded}
+        onClose={() => setIsExpanded(false)}
+      />
     </motion.div>
   );
 }
